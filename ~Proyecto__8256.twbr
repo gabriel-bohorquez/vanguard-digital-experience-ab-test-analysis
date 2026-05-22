@@ -374,6 +374,9 @@
       <column caption='time_minutes' datatype='integer' name='[Calculation_0362498521169921]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='DATEDIFF(&apos;minute&apos;, [previous_time], [date_time])' />
       </column>
+      <column caption='Tasa abandono' datatype='real' name='[Calculation_0567352201396224]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='// Calculamos la tasa de abandono restando la tasa de finalización al 100% (1)&#13;&#10;1 - (&#13;&#10;  COUNTD(&#13;&#10;    IF [process_step] = &quot;confirm&quot;&#13;&#10;    THEN [client_id]&#13;&#10;    END&#13;&#10;  )&#13;&#10;  /&#13;&#10;  COUNTD([client_id])&#13;&#10;)' />
+      </column>
       <column caption='Completion Rate Correct' datatype='real' name='[Calculation_1947857527099392]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='COUNTD(&#10;    IF [process_step] = &quot;confirm&quot; THEN [client_id] END&#10;)&#10;/&#10;COUNTD([client_id])' />
       </column>
@@ -409,10 +412,13 @@
       <column datatype='real' datatype-customized='true' hidden='true' name='[time_minutes]' role='dimension' type='ordinal' />
       <column caption='Visit Id' datatype='string' name='[visit_id]' role='dimension' type='nominal' />
       <column caption='Visitor Id' datatype='string' name='[visitor_id]' role='dimension' type='nominal' />
+      <column-instance column='[clnt_age]' derivation='Avg' name='[avg:clnt_age:qk]' pivot='key' type='quantitative' />
       <column-instance column='[Clnt Tenure Yr (agrupación)]' derivation='None' name='[none:Clnt Tenure Yr (agrupación):ok]' pivot='key' type='ordinal' />
       <column-instance column='[Variation]' derivation='None' name='[none:Variation:nk]' pivot='key' type='nominal' />
       <column-instance column='[client_id]' derivation='None' name='[none:client_id:qk]' pivot='key' type='quantitative' />
       <column-instance column='[clnt_tenure_yr]' derivation='None' name='[none:clnt_tenure_yr:ok]' pivot='key' type='ordinal' />
+      <column-instance column='[Calculation_0567352201396224]' derivation='User' name='[usr:Calculation_0567352201396224:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Calculation_1947857531072513]' derivation='User' name='[usr:Calculation_1947857531072513:qk]' pivot='key' type='quantitative' />
       <group hidden='true' name='[Exclusiones (Client Id,Clnt Tenure Yr (agrupación))]' name-style='unqualified' user:auto-column='exclude'>
         <groupfilter function='crossjoin'>
           <groupfilter function='level-members' level='[none:client_id:qk]' />
@@ -902,6 +908,17 @@
               <bucket>45</bucket>
             </map>
           </encoding>
+          <encoding attr='color' field='[:Measure Names]' palette='blue_10_0' type='palette'>
+            <map to='#4e79a7'>
+              <bucket>&quot;[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_1947857531072513:qk]&quot;</bucket>
+            </map>
+            <map to='#6798c1'>
+              <bucket>&quot;[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[avg:clnt_age:qk]&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_0567352201396224:qk]&quot;</bucket>
+            </map>
+          </encoding>
         </style-rule>
       </style>
       <semantic-values>
@@ -954,10 +971,10 @@
   <actions>
     <action caption='Filtro 1 (generado)' name='[Action1_DA1F869E7428450CAC68C0C0F9748905]'>
       <activation auto-clear='true' type='on-select' />
-      <source dashboard='Dashboard' type='sheet' worksheet='Error Rate' />
+      <source dashboard='KPI' type='sheet' worksheet='Error Rate' />
       <command command='tsc:tsl-filter'>
         <param name='special-fields' value='all' />
-        <param name='target' value='Dashboard' />
+        <param name='target' value='KPI' />
       </command>
     </action>
   </actions>
@@ -1256,7 +1273,7 @@
       </table>
       <simple-id uuid='{52A71C8D-F437-4DF6-8E73-E57BAFFE35EB}' />
     </worksheet>
-    <worksheet name='Coste vs eficiencia'>
+    <worksheet name='Coste-Efectividad'>
       <table>
         <view>
           <datasources>
@@ -1574,6 +1591,118 @@
       </table>
       <simple-id uuid='{E5F8427D-3298-4016-8C9E-977A1DD81760}' />
     </worksheet>
+    <worksheet name='Tasa de abandono por antiguedad Test vs Control'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='vanguard_tableau_ready' name='federated.0to2n4l1yoeiyb1dyuneb1odjoak' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0to2n4l1yoeiyb1dyuneb1odjoak'>
+            <column caption='Tasa abandono' datatype='real' name='[Calculation_0567352201396224]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='// Calculamos la tasa de abandono restando la tasa de finalización al 100% (1)&#13;&#10;1 - (&#13;&#10;  COUNTD(&#13;&#10;    IF [process_step] = &quot;confirm&quot;&#13;&#10;    THEN [client_id]&#13;&#10;    END&#13;&#10;  )&#13;&#10;  /&#13;&#10;  COUNTD([client_id])&#13;&#10;)' />
+            </column>
+            <column datatype='string' name='[Variation]' role='dimension' type='nominal' />
+            <column-instance column='[clnt_tenure_yr]' derivation='Avg' name='[avg:clnt_tenure_yr:qk]' pivot='key' type='quantitative' />
+            <column caption='Client Id' datatype='integer' name='[client_id]' role='dimension' type='ordinal' />
+            <column caption='Clnt Tenure Yr' datatype='integer' datatype-customized='true' name='[clnt_tenure_yr]' role='dimension' type='ordinal' />
+            <column-instance column='[Variation]' derivation='None' name='[none:Variation:nk]' pivot='key' type='nominal' />
+            <column caption='Process Step' datatype='string' name='[process_step]' role='dimension' type='nominal' />
+            <column-instance column='[Calculation_0567352201396224]' derivation='User' name='[usr:Calculation_0567352201396224:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_0567352201396224:qk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_0567352201396224:qk]</rows>
+        <cols>([federated.0to2n4l1yoeiyb1dyuneb1odjoak].[none:Variation:nk] * [federated.0to2n4l1yoeiyb1dyuneb1odjoak].[avg:clnt_tenure_yr:qk])</cols>
+      </table>
+      <simple-id uuid='{589AC64A-B57D-4A56-96E9-C46B6AEC6EDB}' />
+    </worksheet>
+    <worksheet name='Tasa de complemento vs tasa de abandono'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='vanguard_tableau_ready' name='federated.0to2n4l1yoeiyb1dyuneb1odjoak' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0to2n4l1yoeiyb1dyuneb1odjoak'>
+            <column caption='Tasa abandono' datatype='real' name='[Calculation_0567352201396224]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='// Calculamos la tasa de abandono restando la tasa de finalización al 100% (1)&#13;&#10;1 - (&#13;&#10;  COUNTD(&#13;&#10;    IF [process_step] = &quot;confirm&quot;&#13;&#10;    THEN [client_id]&#13;&#10;    END&#13;&#10;  )&#13;&#10;  /&#13;&#10;  COUNTD([client_id])&#13;&#10;)' />
+            </column>
+            <column caption='Completion Rate FINAL' datatype='real' datatype-customized='true' name='[Calculation_1947857531072513]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='COUNTD(&#10;IF [process_step] = &quot;confirm&quot;&#10;THEN [client_id]&#10;END&#10;)&#10;/&#10;COUNTD([client_id])' />
+            </column>
+            <column-instance column='[clnt_age]' derivation='Avg' name='[avg:clnt_age:qk]' pivot='key' type='quantitative' />
+            <column caption='Client Id' datatype='integer' name='[client_id]' role='dimension' type='ordinal' />
+            <column caption='Clnt Age' datatype='integer' datatype-customized='true' name='[clnt_age]' role='dimension' type='ordinal' />
+            <column caption='Process Step' datatype='string' name='[process_step]' role='dimension' type='nominal' />
+            <column-instance column='[Calculation_0567352201396224]' derivation='User' name='[usr:Calculation_0567352201396224:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1947857531072513]' derivation='User' name='[usr:Calculation_1947857531072513:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane id='4' selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[avg:clnt_age:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='has-stroke' value='true' />
+                <format attr='stroke-color' value='#4e79a7' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='5' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_1947857531072513:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[avg:clnt_age:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='has-stroke' value='true' />
+                <format attr='stroke-color' value='#4e79a7' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='6' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_0567352201396224:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[avg:clnt_age:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='has-stroke' value='true' />
+                <format attr='stroke-color' value='#4e79a7' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[avg:clnt_age:qk]</rows>
+        <cols>([federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_1947857531072513:qk] + [federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_0567352201396224:qk])</cols>
+      </table>
+      <simple-id uuid='{D8A89AC3-506D-4E39-9AC8-7A7AEBB21350}' />
+    </worksheet>
   </worksheets>
   <dashboards>
     <dashboard name='A/B Testing' type='storyboard'>
@@ -1596,7 +1725,7 @@
             <zone h='81667' id='5' paired-zone-id='4' removable='false' type-v2='flipboard' w='99000' x='500' y='17444'>
               <flipboard active-id='3' nav-type='caption' show-nav-arrows='true'>
                 <story-points>
-                  <story-point caption='A/B Testing KPI' captured-sheet='Dashboard' id='1'>
+                  <story-point caption='A/B Testing KPI' captured-sheet='KPI' id='1'>
                     <capturedDeltas>
                       <worksheet name='Error Test vs Control'>
                         <shelf-sort-deltas>
@@ -1637,7 +1766,7 @@
                       </worksheet>
                     </capturedDeltas>
                   </story-point>
-                  <story-point caption='Análisis clientes' captured-sheet='' id='3' />
+                  <story-point caption='Análisis clientes' captured-sheet='Dashboard 3' id='3' />
                   <story-point caption='Eficiencia vs coste' captured-sheet='' id='4' />
                 </story-points>
               </flipboard>
@@ -1660,8 +1789,37 @@
             <run fontalignment='0' fontsize='12'>Vanguard probó un nuevo proceso digital con 50.500 clientes entre marzo y junio 2017. Analizamos 3 KPIs clave para determinar si el nuevo diseño mejora la experiencia.</run>
           </formatted-text>
         </zone>
+        <zone flipboard-zone-id='5' forceUpdate='true' h='26000' id='9' story-point-id='3' type-v2='text' w='17063' x='41688' y='20444'>
+          <formatted-text>
+            <run fontalignment='0' fontcolor='#000000' fontsize='12'>La mejora actual (3.7%) está por debajo del umbral del 5% que definimos. </run>
+            <run fontalignment='0'>Æ&#10;&#10;&#10;</run>
+            <run fontalignment='0' fontcolor='#000000' fontsize='12'>Esto es clave para nuestra evaluación: indica que aunque el diseño es mejor, pero quizás no lo suficiente para justificar una inversión muy alta.</run>
+          </formatted-text>
+        </zone>
       </zones>
       <simple-id uuid='{2E72C2CC-BDE3-4737-8055-B66A44F84DCA}' />
+    </dashboard>
+    <dashboard enable-sort-zone-taborder='true' name='Abandono '>
+      <style />
+      <size maxheight='860' maxwidth='650' minheight='560' minwidth='420' />
+      <zones />
+      <devicelayouts>
+        <devicelayout auto-generated='true' name='Phone'>
+          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
+          <zones>
+            <zone h='100000' id='2' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='84000' id='1' param='vert' type-v2='layout-flow' w='84000' x='8000' y='8000' />
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+      <simple-id uuid='{46EBC85F-FD16-4174-B64C-25E16F976D83}' />
     </dashboard>
     <dashboard enable-sort-zone-taborder='true' name='Análisis clientes'>
       <style />
@@ -1699,7 +1857,59 @@
       </devicelayouts>
       <simple-id uuid='{07BB0E6A-EE7E-40A4-AD8A-7CBC46BDBE44}' />
     </dashboard>
-    <dashboard enable-sort-zone-taborder='true' name='Dashboard'>
+    <dashboard enable-sort-zone-taborder='true' name='Dashboard 3'>
+      <style />
+      <size maxheight='860' maxwidth='650' minheight='560' minwidth='420' />
+      <datasources>
+        <datasource caption='Parámetros' name='Parameters' />
+      </datasources>
+      <datasource-dependencies datasource='Parameters'>
+        <column caption='Umbral de rentabilidad' datatype='real' default-format='p0.00%' name='[Parámetro 1]' param-domain-type='any' role='measure' type='quantitative' value='0.05'>
+          <calculation class='tableau' formula='0.05' />
+        </column>
+      </datasource-dependencies>
+      <zones>
+        <zone h='100000' id='5' type-v2='layout-basic' w='100000' x='0' y='0'>
+          <zone h='97406' id='8' param='vert' type-v2='layout-flow' w='97538' x='1231' y='1297'>
+            <zone h='6808' id='9' type-v2='title' w='97538' x='1231' y='1297'>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='4' />
+              </zone-style>
+            </zone>
+            <zone h='90598' id='6' type-v2='layout-basic' w='97538' x='1231' y='8105' />
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+        <zone h='94652' id='3' name='Coste-Efectividad' w='91846' x='1538' y='2269' />
+        <zone h='7131' id='4' mode='type_in' param='[Parameters].[Parámetro 1]' type-v2='paramctrl' w='24615' x='67846' y='20746' />
+      </zones>
+      <devicelayouts>
+        <devicelayout auto-generated='true' name='Phone'>
+          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
+          <zones>
+            <zone h='100000' id='2' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='84000' id='1' param='vert' type-v2='layout-flow' w='84000' x='8000' y='8000' />
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+      <simple-id uuid='{8AC83790-B987-4B30-9C38-1223818DE473}' />
+    </dashboard>
+    <dashboard enable-sort-zone-taborder='true' name='KPI'>
       <layout-options>
         <title>
           <formatted-text>
@@ -1809,39 +2019,6 @@
         </devicelayout>
       </devicelayouts>
       <simple-id uuid='{311C91F2-3251-48F8-B088-C6FE33EC7DA6}' />
-    </dashboard>
-    <dashboard enable-sort-zone-taborder='true' name='Dashboard 3'>
-      <style />
-      <size maxheight='860' maxwidth='650' minheight='560' minwidth='420' />
-      <datasources>
-        <datasource caption='Parámetros' name='Parameters' />
-      </datasources>
-      <datasource-dependencies datasource='Parameters'>
-        <column caption='Umbral de rentabilidad' datatype='real' default-format='p0.00%' name='[Parámetro 1]' param-domain-type='any' role='measure' type='quantitative' value='0.05'>
-          <calculation class='tableau' formula='0.05' />
-        </column>
-      </datasource-dependencies>
-      <zones>
-        <zone h='94652' id='3' name='Coste vs eficiencia' w='91846' x='1538' y='2269' />
-        <zone h='7131' id='4' mode='type_in' param='[Parameters].[Parámetro 1]' type-v2='paramctrl' w='24615' x='67846' y='20746' />
-      </zones>
-      <devicelayouts>
-        <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
-          <zones>
-            <zone h='100000' id='2' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='84000' id='1' param='vert' type-v2='layout-flow' w='84000' x='8000' y='8000' />
-              <zone-style>
-                <format attr='border-color' value='#000000' />
-                <format attr='border-style' value='none' />
-                <format attr='border-width' value='0' />
-                <format attr='margin' value='8' />
-              </zone-style>
-            </zone>
-          </zones>
-        </devicelayout>
-      </devicelayouts>
-      <simple-id uuid='{8AC83790-B987-4B30-9C38-1223818DE473}' />
     </dashboard>
   </dashboards>
   <windows source-height='30'>
@@ -2032,7 +2209,7 @@
       </cards>
       <simple-id uuid='{78E5DD03-29C3-4128-83CF-A2352C2E246B}' />
     </window>
-    <window class='worksheet' name='Coste vs eficiencia'>
+    <window class='worksheet' name='Coste-Efectividad'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -2111,7 +2288,63 @@
       </cards>
       <simple-id uuid='{BC7A5D14-2241-495F-BC46-C71F7A60F0CD}' />
     </window>
-    <window class='dashboard' name='Dashboard'>
+    <window class='worksheet' name='Tasa de complemento vs tasa de abandono'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='175'>
+            <card pane-specification-id='5' param='[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[avg:clnt_age:qk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{F2F31D0A-B4A5-469C-8C68-443CEB4F4A0C}' />
+    </window>
+    <window class='worksheet' name='Tasa de abandono por antiguedad Test vs Control'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='175'>
+            <card pane-specification-id='0' param='[federated.0to2n4l1yoeiyb1dyuneb1odjoak].[usr:Calculation_0567352201396224:qk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{47129FB9-AEE4-46F5-8506-46E82E3FA87E}' />
+    </window>
+    <window class='dashboard' name='KPI'>
       <viewpoints>
         <viewpoint name='Average Time Between Steps'>
           <zoom type='fit-width' />
@@ -2149,16 +2382,21 @@
       <active id='-1' />
       <simple-id uuid='{D0145ED2-606E-4917-AC6B-BD2E1E5A8A56}' />
     </window>
-    <window class='dashboard' name='Dashboard 3'>
+    <window class='dashboard' maximized='true' name='Dashboard 3'>
       <viewpoints>
-        <viewpoint name='Coste vs eficiencia' />
+        <viewpoint name='Coste-Efectividad' />
       </viewpoints>
-      <active id='-1' />
+      <active id='3' />
       <simple-id uuid='{EAB8BC61-0873-4171-8A16-8A6351E46361}' />
     </window>
-    <window class='dashboard' maximized='true' name='A/B Testing'>
+    <window class='dashboard' name='Abandono '>
       <viewpoints />
-      <active id='4' />
+      <active id='-1' />
+      <simple-id uuid='{604FD0D7-2F95-4288-AE6F-BBEC0CC39276}' />
+    </window>
+    <window class='dashboard' name='A/B Testing'>
+      <viewpoints />
+      <active id='5' />
       <simple-id uuid='{E65D3812-C29A-4F96-BE8A-F45C9DC00762}' />
     </window>
   </windows>
