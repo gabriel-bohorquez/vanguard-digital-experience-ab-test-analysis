@@ -462,3 +462,115 @@ La lógica de `05_hypotesis_testing.ipynb`, reconstruida desde:
 se considera la fuente metodológica provisional para Completion Rate.
 
 El notebook `04_kpis_ab_testing.ipynb` deberá corregirse para utilizar la misma población, definición y lógica.
+
+## Definición oficial provisional de Backtracking Rate
+
+### Corrección terminológica
+
+La métrica denominada anteriormente `Error Rate` no identifica errores técnicos del sistema. Detecta transiciones en las que un usuario vuelve desde un paso más avanzado hacia un paso anterior.
+
+Por claridad metodológica y de negocio, la métrica se denominará:
+
+> Backtracking Rate o Tasa de retroceso.
+
+### Secuencia del funnel
+
+El orden definido de los pasos es:
+
+1. `start`
+2. `step_1`
+3. `step_2`
+4. `step_3`
+5. `confirm`
+
+Se considera retroceso cuando, dentro de la misma visita y respetando el orden temporal, el paso actual tiene una posición inferior al paso inmediatamente anterior.
+
+### Métrica principal
+
+Client Backtracking Rate:
+
+> Proporción de clientes experimentales que presentan al menos una transición hacia un paso anterior durante alguna de sus visitas.
+
+Cada cliente se contabiliza una única vez.
+
+Resultados:
+
+Control:
+
+- Clientes con al menos un retroceso: 6.142
+- Clientes totales: 23.532
+- Backtracking Rate: 26,10 %
+
+Test:
+
+- Clientes con al menos un retroceso: 9.011
+- Clientes totales: 26.968
+- Backtracking Rate: 33,41 %
+
+Diferencia absoluta:
+
+- aproximadamente 7,31 puntos porcentuales más en Test.
+
+Incremento relativo:
+
+- aproximadamente 28,0 % respecto a Control.
+
+### Métrica diagnóstica secundaria
+
+Transition Backtracking Rate:
+
+> Proporción de transiciones evaluables que representan un movimiento hacia un paso anterior.
+
+Control:
+
+- Retrocesos: 9.581
+- Transiciones evaluables: 108.293
+- Tasa: 8,85 %
+
+Test:
+
+- Retrocesos: 16.232
+- Transiciones evaluables: 139.495
+- Tasa: 11,64 %
+
+Diferencia absoluta:
+
+- aproximadamente 2,79 puntos porcentuales más en Test.
+
+Esta métrica se utilizará para analizar la intensidad de la fricción, pero no como KPI experimental principal, porque un mismo cliente puede contribuir con múltiples transiciones.
+
+### Métrica complementaria por visita
+
+Control:
+
+- Visitas con retroceso: 6.520
+- Visitas totales: 32.189
+- Tasa: 20,26 %
+
+Test:
+
+- Visitas con retroceso: 9.961
+- Visitas totales: 37.136
+- Tasa: 26,82 %
+
+La métrica por visita será complementaria y no sustituirá la medición principal por cliente.
+
+### Patrones observados
+
+El destino más frecuente de los retrocesos es `start`:
+
+- Control: 4.813
+- Test: 10.514
+
+La transición de retroceso más frecuente es `step_1 -> start`:
+
+- Control: 3.490
+- Test: 6.404
+
+Este patrón sugiere que la fricción adicional del grupo Test podría concentrarse en las primeras etapas del proceso. La causa concreta no puede determinarse únicamente con los eventos disponibles.
+
+### Interpretación provisional
+
+El rediseño mejora la tasa de finalización, pero también aumenta la proporción de clientes que retroceden durante el proceso.
+
+La significancia estadística de la diferencia en Backtracking Rate todavía debe verificarse antes de formular una conclusión definitiva.
