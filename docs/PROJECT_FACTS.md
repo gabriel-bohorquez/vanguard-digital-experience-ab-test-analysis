@@ -178,3 +178,43 @@ La Fase 1 se considerará cerrada cuando:
 - los principales riesgos estén documentados;
 - el backlog esté priorizado;
 - y el repositorio esté limpio y sincronizado.
+
+## Definición estratégica validada
+
+### Problema de negocio
+
+Vanguard necesita determinar si una nueva interfaz digital mejora el rendimiento del proceso online frente a la experiencia tradicional.
+
+### Usuario principal
+
+Equipos de producto digital, experiencia de usuario y negocio responsables de decidir si el rediseño debe mantenerse, iterarse o ampliarse.
+
+### Decisión apoyada
+
+Evaluar si la nueva experiencia digital debe adoptarse, ajustarse o someterse a nuevas pruebas antes de una implementación más amplia.
+
+### KPI principal
+
+Completion Rate por grupo experimental, medido como la proporción de clientes asignados a Test o Control que alcanzan al menos una vez el paso `confirm`.
+
+### KPIs secundarios
+
+- Error Rate o tasa de retrocesos, pendiente de definición final del denominador.
+- Tiempo entre pasos, pendiente de validación metodológica y tratamiento de valores extremos.
+- Funnel de progresión y abandono.
+- Balance demográfico entre grupos.
+
+### Formato final previsto
+
+Proyecto de Data Analytics y A/B Testing compuesto por:
+
+- notebooks reproducibles;
+- análisis estadístico;
+- dashboard Tableau;
+- README profesional;
+- repositorio GitHub;
+- documentación para portfolio, CV, LinkedIn e entrevista.
+
+### Alcance real
+
+El proyecto evalúa asociación y diferencias observadas entre grupos dentro del experimento. No debe presentarse como una prueba absoluta de mejora de experiencia sin considerar fricción, errores, tiempos y limitaciones metodológicas.
