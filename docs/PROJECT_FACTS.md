@@ -72,3 +72,60 @@ Inventario inicial registrado antes de modificar la estructura, nombres o conten
 - El nombre del repositorio mezcla idiomas y conserva una denominación académica.
 - La sección About de GitHub no tiene descripción, sitio web ni topics.
 - El repositorio conserva visiblemente su condición de fork.
+
+## Claims y métricas visibles antes de la auditoría
+
+### Completion Rate
+
+Se detectaron resultados inconsistentes entre notebooks:
+
+- `04_kpis_ab_testing.ipynb`:
+  - Control: aproximadamente 63%
+  - Test: aproximadamente 68%
+  - Diferencia: aproximadamente +5 puntos porcentuales
+
+- `05_hypothesis_testing.ipynb`:
+  - Control: aproximadamente 65,59%
+  - Test: aproximadamente 69,29%
+  - Diferencia: aproximadamente +3,70 puntos porcentuales
+  - p-value reportado: 0,0000
+
+Estas métricas no se consideran todavía verificadas. Deben recalcularse desde una única fuente de datos y con una definición común de usuario completado.
+
+### Error Rate
+
+Resultados visibles:
+
+- Control: aproximadamente 8,94%
+- Test: aproximadamente 11,48%
+- Diferencia: Test presenta aproximadamente 2,54 puntos porcentuales más de retrocesos.
+
+Definición utilizada provisionalmente: proporción de registros identificados como retroceso de paso.
+
+La métrica debe revisarse para confirmar si el denominador correcto es evento, transición, sesión o usuario.
+
+### Tiempo entre pasos
+
+Resultados visibles:
+
+- Control: aproximadamente 8,3 minutos por paso.
+- Test: aproximadamente 10,1 minutos por paso.
+
+La definición y el tratamiento de valores extremos deben validarse antes de publicar el resultado.
+
+### Umbral estratégico
+
+Un notebook establece un umbral mínimo de mejora absoluta del 5% para justificar una implementación completa.
+
+El origen empresarial de este umbral no está documentado y debe tratarse como supuesto analítico, no como criterio oficial de Vanguard.
+
+### Claims públicos en riesgo
+
+Los siguientes claims del README requieren validación antes de mantenerse:
+
+- El rediseño reduce la fricción.
+- El rediseño optimiza la experiencia general del cliente.
+- La variación Test superó a Control en los principales KPIs.
+- El nuevo diseño presenta mejor rendimiento general.
+
+La evidencia actual sugiere un resultado mixto: mayor finalización, pero también más retrocesos y mayor tiempo por paso.
