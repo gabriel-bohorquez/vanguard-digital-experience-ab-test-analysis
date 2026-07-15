@@ -211,3 +211,4 @@ Posibles mejoras futuras:
 
 ---
 
+Link presentación: https://canva.link/vfb8d6vsltzus81
