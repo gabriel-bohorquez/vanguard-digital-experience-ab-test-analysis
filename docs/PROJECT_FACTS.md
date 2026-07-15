@@ -129,3 +129,52 @@ Los siguientes claims del README requieren validación antes de mantenerse:
 - El nuevo diseño presenta mejor rendimiento general.
 
 La evidencia actual sugiere un resultado mixto: mayor finalización, pero también más retrocesos y mayor tiempo por paso.
+
+## Backlog priorizado de profesionalización
+
+### Prioridad alta
+
+1. Definir una única fuente de datos válida para el análisis.
+2. Separar datos originales, intermedios y procesados.
+3. Corregir todas las rutas absolutas y sustituirlas por rutas relativas robustas.
+4. Recalcular los KPIs desde una única lógica reproducible.
+5. Unificar la definición de Completion Rate.
+6. Revisar la definición y el denominador de Error Rate.
+7. Revisar el cálculo de tiempo entre pasos y el tratamiento de outliers.
+8. Validar el Two-Proportion Z-Test y documentar correctamente hipótesis, alternativa y p-value.
+9. Resolver las inconsistencias entre `04_kpis_ab_testing.ipynb`, `05_hypothesis_testing.ipynb` y `06_final_analysis.ipynb`.
+10. Verificar si `vanguard_cleaned_todos unidos_(Gabriel).csv` es incompleto, intermedio u obsoleto.
+11. Verificar si `vanguard_tableau_ready.csv` coincide con las métricas finales validadas.
+12. Auditar y, si corresponde, rehacer el dashboard Tableau.
+13. Eliminar outputs de errores y warnings guardados en notebooks.
+14. Asegurar que cada notebook pueda ejecutarse de principio a fin.
+15. Corregir claims públicos que no estén respaldados por evidencia verificable.
+
+### Prioridad media
+
+1. Renombrar notebooks con convención profesional y consistente.
+2. Reorganizar el repositorio con una estructura `data/raw`, `data/interim`, `data/processed`, `reports/figures` y `tableau`, solo si cada carpeta tiene una función real.
+3. Renombrar artefactos genéricos como `Proyecto.twbx`, `output.png` y `output4.png`.
+4. Revisar y refactorizar `src/functions.py`.
+5. Crear `requirements.txt` con versiones probadas.
+6. Crear `LICENSE`.
+7. Añadir descripción, topics y metadata profesional en GitHub.
+8. Reescribir el README después de validar todos los hechos.
+9. Documentar limitaciones metodológicas, sesgos y alcance real del experimento.
+
+### Prioridad baja
+
+1. Evaluar si conviene mantener el repositorio como fork o migrarlo a un repositorio propio.
+2. Renombrar el repositorio con una denominación profesional.
+3. Preparar capturas finales para README y portfolio.
+4. Alinear posteriormente portfolio, LinkedIn, CV y respuestas de entrevista.
+
+## Criterio de cierre de la Fase 1
+
+La Fase 1 se considerará cerrada cuando:
+
+- el estado original esté preservado;
+- exista un inventario verificable;
+- los principales riesgos estén documentados;
+- el backlog esté priorizado;
+- y el repositorio esté limpio y sincronizado.
