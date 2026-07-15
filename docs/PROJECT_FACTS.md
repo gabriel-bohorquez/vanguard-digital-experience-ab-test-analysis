@@ -574,3 +574,62 @@ Este patrón sugiere que la fricción adicional del grupo Test podría concentra
 El rediseño mejora la tasa de finalización, pero también aumenta la proporción de clientes que retroceden durante el proceso.
 
 La significancia estadística de la diferencia en Backtracking Rate todavía debe verificarse antes de formular una conclusión definitiva.
+
+## Validación estadística del Client Backtracking Rate
+
+### Definición oficial
+
+Se considera que un cliente presenta backtracking cuando, dentro de al menos una de sus visitas, registra una transición desde un paso posterior hacia un paso anterior del proceso.
+
+La unidad de análisis es el cliente:
+
+- numerador: clientes con al menos un retroceso;
+- denominador: total de clientes analizados por variante.
+
+### Resultados
+
+Control:
+
+- clientes con retroceso: 6.142;
+- clientes totales: 23.532;
+- Client Backtracking Rate: 26,10 %.
+
+Test:
+
+- clientes con retroceso: 9.011;
+- clientes totales: 26.968;
+- Client Backtracking Rate: 33,41 %.
+
+Diferencia Test − Control:
+
+- diferencia absoluta: +7,31 puntos porcentuales;
+- incremento relativo: +28,02 %;
+- intervalo de confianza del 95 %: [6,52; 8,11] puntos porcentuales.
+
+### Prueba estadística
+
+Se aplicó una prueba Z de diferencia de proporciones.
+
+Hipótesis:
+
+- H0: el Client Backtracking Rate de Test no es superior al de Control;
+- H1: el Client Backtracking Rate de Test es superior al de Control.
+
+Resultado:
+
+- estadístico Z: 17,8884;
+- p-value unilateral: inferior a 0,001.
+
+### Decisión
+
+Se rechaza H0.
+
+Existe evidencia estadísticamente significativa de que la variante Test presenta una proporción mayor de clientes con retrocesos que la variante Control.
+
+### Interpretación de negocio
+
+El nuevo diseño mejora la tasa de finalización, pero simultáneamente aumenta la proporción de clientes que retroceden durante el recorrido.
+
+Esto indica una mejora de conversión acompañada por mayor fricción de navegación o confusión en determinados pasos. Por tanto, no debe describirse el rediseño como una mejora integral de la experiencia de usuario.
+
+La recomendación provisional es mantener el rediseño como base, identificar las transiciones concretas que concentran los retrocesos y optimizar esos puntos antes de una implantación definitiva.
