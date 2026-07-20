@@ -252,7 +252,7 @@ Proyecto-2-Vanguard-ab-test/
 Clone the repository:
 
 ```bash
-git clone https://github.com/gabriel-bohorquez/Proyecto-2-Vanguard-ab-test.git
+git clone https://github.com/gabriel-bohorquez/vanguard-digital-experience-ab-test-analysis.git
 ```
 
 Open the project folder:
